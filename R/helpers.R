@@ -1,62 +1,34 @@
-# Tidy recoding
-recode_starts_with <- function(x,pattern,original_value,
-                               new_value,...){
+# Tidy recoding: Hardcoded(dplyr less flexible)
+
+# This is for use with na_summary
+# Will need to figure out how to avoid it, later
+# metric here is just a name that actually means nothing
+utils::globalVariables(c("all_of","metric","value","name"))
+# .....
+recode_selectors <- function(x,pattern_type=NULL,pattern=NULL,case_sensitive=FALSE,...){
+
+ columns_start_with<-grep(paste0("^(",pattern,")",collapse = ""),names(x),ignore.case=case_sensitive)
+ columns_end_with <- grep(paste0("(",pattern,")$",collapse = ""),names(x),ignore.case = case_sensitive)
+ columns_contain <- grep(pattern,names(x),ignore.case = case_sensitive)
+ regex <- grep(pattern,names(x),...)
+
+final_selectors <- switch(pattern_type,
+       starts_with = columns_start_with,
+       ends_with = columns_end_with,
+       contains = columns_contain,
+       regex = columns_contain
+       )
+final_selectors
+}
+# make changes
+recode_helper <- function(x,pattern_type=NULL,pattern=NULL,original_value,
+                          new_value,case_sensitive=FALSE,...){
 x %>%
-    dplyr::mutate_at(dplyr::vars(dplyr::starts_with(match = pattern,
-                                        ignore.case = TRUE,
-                                                    ...)),
-                     function(y) ifelse(y %in% original_value ,
-                                        new_value,
-                                        y))
-}
-recode_ends_with <- function(x,pattern,original_value,new_value,
-                             ...){
-  x %>%
-    dplyr::mutate_at(dplyr::vars(dplyr::ends_with(match = pattern,
-                                                    ignore.case = TRUE,
-                                                    ...)),
-            function(y) ifelse(y %in% original_value ,new_value,
-                                        y))
-}
-recode_contains<- function(x,pattern,original_value,new_value,
-                           ...){
-  x %>%
-    dplyr::mutate_at(dplyr::vars(dplyr::contains(match = pattern,
-                                        ignore.case = TRUE,
-                                                    ...)),
-              function(y) ifelse(y %in% original_value ,new_value,
-                                        y))
+  mutate(across(recode_selectors(x,pattern=pattern,pattern_type=pattern_type,case_sensitive = case_sensitive,
+                                 ...),~ifelse(. %in% original_value, new_value,.)))
+
 }
 
-# NA replacements at given columns
-# No idea how this could have been done under recode_*
-# Maybe someday I'll figure it out, for now I'll go "manual"
-recode_na_as_starts_with <- function(x,pattern,
-                                     value,...){
-  x %>%
-    dplyr::mutate_at(dplyr::vars(dplyr::starts_with(pattern,
-                                                    ...)),
-                     function(x_data) replace(x_data,
-                                              is.na(x_data),
-                                              value))
-}
 
-recode_na_as_ends_with <- function(x,pattern,
-                                     value,...){
-  x %>%
-    dplyr::mutate_at(dplyr::vars(dplyr::ends_with(pattern,
-                                                  ...)),
-                     function(x_data) replace(x_data,
-                                              is.na(x_data),
-                                              value))
-}
-recode_na_as_contains <- function(x,pattern,
-                                     value,...){
-  x %>%
-    dplyr::mutate_at(dplyr::vars(dplyr::contains(pattern,
-                                                 ...)),
-                     function(x_data) replace(x_data,
-                                              is.na(x_data),
-                                              value))
-}
+
 

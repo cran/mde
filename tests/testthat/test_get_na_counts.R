@@ -1,8 +1,15 @@
 testthat::test_that(desc="get_na_counts works as expected",
                     code={
-                  testthat::expect_error(mde::get_na_counts(airquality,
-                                                       grouped = TRUE),
-                                         "Grouping chosen but no grouping columns provided.",
+
+
+                  testthat::expect_equal(nrow(get_na_counts(iris,"Species")),
+                                         3)
+                  testthat::expect_error(get_na_counts(airquality,
+                                                       grouping_cols = "Nope"),
+                                         "All grouping columns must exist in the data set",
                                          fixed=TRUE)
+                  testthat::expect_equal(nrow(get_na_counts(airquality,
+                                                            grouping_cols = "Month")),
+                                         5)
 
                     })

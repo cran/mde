@@ -1,7 +1,7 @@
 testthat::test_that(desc="drop_na_at works as expected",
                     code= {
                       # use unequal rows
-               
+
             testthat::expect_error(mde::drop_na_at(airquality,
                                         pattern_type="contains",
                                         pattern="o"),
@@ -12,7 +12,10 @@ testthat::test_that(desc="drop_na_at works as expected",
                                   pattern = "O")))
             testthat::expect_error(mde::drop_na_at(airquality,
                                           pattern_type="contains"),
-                                  "No pattern was provided. Please provide one.",
+                                  "A pattern must be supplied.",
                                   fixed=TRUE)
-             
+            testthat::expect_error(mde::drop_na_at(airquality, pattern_type="gibberish"),
+                                   'pattern_type should be one of starts_with,ends_with,contains or regex',
+                                   fixed = TRUE)
+
                     })

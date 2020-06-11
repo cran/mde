@@ -23,36 +23,35 @@ percent_missing.data.frame <- function(df,  grouping_cols = NULL,
 
 
 if(!is.null(grouping_cols)){
-  if(is.null(exclude_cols)){
-
-    df %>%
-      dplyr::group_by(!!!dplyr::syms(grouping_cols)) %>%
-      dplyr::summarise_all(~ sum(is.na(.))/length(.) * 100)
-
+  if(!all(grouping_cols %in% names(df))){
+    stop("All grouping columns should exist in the dataset")
   }
 
-  else{
-    df %>%
-      dplyr::group_by(!!!dplyr::syms(grouping_cols)) %>%
-      dplyr::summarise_at(dplyr::vars(-exclude_cols),
-                          ~ sum(is.na(.))/length(.) * 100)
-  }
+  df <-   df %>%
+    dplyr::group_by(!!!dplyr::syms(grouping_cols))
 
-
-  }
-
-
-else{
-if(is.null(exclude_cols)){
-  purrr::map_dbl(df, ~sum(is.na(.x))/ length(.x) * 100)
 }
-  else{
-    to_remove <- which(names(df) %in% exclude_cols)
-    purrr::map_dbl(df[-to_remove],
-                  ~sum(is.na(.x))/ length(.x) * 100)
+
+if(! is.null(exclude_cols)){
+  if(any(!exclude_cols %in% names(df))){
+    stop("Can only exclude columns that exist in the dataset.")
   }
+
+  df <- df %>%
+        dplyr::select(-exclude_cols)
+
+
+}
+
+  df %>%
+    dplyr::summarise(across(everything(),~ sum(is.na(.))/length(.) * 100)) %>%
+    dplyr::ungroup()
+
+
 
 }
 
 
-}
+
+
+

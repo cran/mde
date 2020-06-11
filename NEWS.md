@@ -1,11 +1,36 @@
 ---
-title: 'mde: Missing Data Explorer'
+title: 'Missing Data Explorer'
 author: "Nelson Gonzabato"
-date: "16/12/2019"
+date: "11/06/2020"
 output: html_document
 ---
 
-# mde version 0.1.1
+# mde version 0.2.0
+
+**Additions**
+
+1. `na_summary` which provides a very quick overview of missingness. It also supports grouped summaries. 
+
+2. `drop_na_if` allows easy dropping of columns where all values are missing.
+
+3. `custom_na_recode` allows replacing missing values with common values such as mean, min, max, sd. 
+
+**Major changes**
+
+2. In `percent_missing`, the argument `grouped` was dropped in favour of simply providing a `grouping_cols` vector.
+
+3. In `recode_as_na` , `subset_df` was dropped. It now simply accepts an optional `subset_cols` argument. The argument `tidy` was also dropped.One can simply provide an optional `pattern_type` and `pattern`.
+
+4. Similar changes were made for `recode_na_as` as above.
+
+5. The argument `x` was changed to `df` in `drop_na_at`. 
+
+
+
+
+
+# mde version 0.1.0
+
 
 Available functions
 

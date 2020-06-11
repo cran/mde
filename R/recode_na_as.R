@@ -4,20 +4,15 @@
 #' @inheritParams recode_as_na
 #' @return An object of the same type as x with NAs replaced with the desired value.
 #' @examples
-#' recode_na_as(airquality, "n/a")
-#' recode_na_as(airquality, subset_df = TRUE,
-#' subset_cols = "Ozone", value = "N/A")
-#' recode_na_as(airquality, subset_df=TRUE, tidy=TRUE,
-#' value=0, pattern_type="starts_with",
-#' pattern="solar",ignore.case=TRUE)
+#' head(recode_na_as(airquality, "n/a"))
+#' head(recode_na_as(airquality, subset_cols = "Ozone", value = "N/A"))
+#' head(recode_na_as(airquality, value=0, pattern_type="starts_with",pattern="Solar"))
 #' @export
 
 recode_na_as <-  function(df, value=0,
-                          subset_df = FALSE,
-                          tidy=FALSE,
                           subset_cols = NULL,
                           pattern_type= NULL,
-                          pattern=NULL,
+                          pattern=NULL,case_sensitive=FALSE,
                           ...) {
   UseMethod("recode_na_as")
 
@@ -26,51 +21,51 @@ recode_na_as <-  function(df, value=0,
 #' @export
 
 recode_na_as.data.frame <- function(df, value=0,
-                                    subset_df = FALSE,
-                                    tidy=FALSE,
-                                     subset_cols = NULL,
+                                    subset_cols = NULL,
                                     pattern_type= NULL,
                                     pattern=NULL,
+                                    case_sensitive=FALSE,
                                     ...){
-  # Use a purely base solution, there are no trophies for that
-  # but yeah
-  if(subset_df & ! tidy){
+
+
+
+if(all(!is.null(subset_cols), !is.null(pattern_type))){
+    stop("Only one of pattern_type or subset_cols should be used but not both.")
+  }
+
+final_res <-  df %>%
+  mutate(across(everything(), ~ifelse(is.na(.),value,.)))
+
+if(!is.null(subset_cols)){
 
 if(!all(subset_cols %in% names(df))){
-   stop("Some names not found in the dataset. Please check and try again.")
-    }
-
-else{
-    which_to_subset <- which(names(df) %in% subset_cols)
-    # which is.na
-  df[,which_to_subset] <-  sapply(df[,which_to_subset], function(column)
-                replace(column,is.na(column),value))
-  df
-    }
-  }
-
-else if (subset_df & tidy){
-  switch(pattern_type,
-         starts_with = recode_na_as_starts_with(x=df,
-                                                pattern=pattern,
-                                                value=value,
-                                                ...),
-         ends_with = recode_na_as_ends_with(x=df,
-                                            pattern=pattern,
-                                            value=value,
-                                            ...),
-         contains = recode_na_as_contains(x=df,
-                                          pattern=pattern,
-                                          value=value,
-                                          ...))
+     stop("Some names not found in the dataset. Please check and try again.")
 }
 
-  else{
-    # Can use dplyr, this looks a bit ugly
+  make_pattern <-paste(subset_cols,collapse="|")
 
-    as.data.frame(sapply(df, function(column)
-      replace(column,is.na(column),value)))
+  final_res<-recode_helper(df,pattern_type="contains",original_value=NA,pattern=make_pattern,
+                new_value=value,case_sensitive=case_sensitive,...)
+  }
+
+  if(!is.null(pattern_type)){
+    if(any(!pattern_type %in% c("starts_with","ends_with","contains",
+                                "regex"))){
+
+      stop("pattern_type should be one of starts_with,ends_with,contains or regex")
+    }
+    if(is.null(pattern)) stop("A pattern must be supplied.")
+    final_res<-recode_helper(df,pattern_type=pattern_type,original_value=NA,pattern=pattern,
+                  new_value=value,case_sensitive=case_sensitive,...)
   }
 
 
+ final_res
+
+
+
 }
+
+
+
+

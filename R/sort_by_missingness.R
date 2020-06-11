@@ -34,44 +34,26 @@ sort_by_missingness.data.frame <- function(x, sort_by = "counts",
     stop("sort_by should be one of counts or percents")
   }
 
-  else{
+  if(sort_by =="counts"){
 
-  if(sort_by == "counts"){
-    if(descending){
-      res<-sort(get_na_counts(x,...), decreasing = TRUE)
-      # Make result more "sensible" res -h
-      res_stacked <- stack(res)[,c(2,1)]
-      names(res_stacked) <- c("variable", "count")
-      res_stacked
-    }
-
-    else{
-      res<-sort(get_na_counts(x,...), decreasing = FALSE)
-      # Make result more "sensible" res -h
-      res_stacked <- stack(res)[,c(2,1)]
-      names(res_stacked) <- c("variable","count")
-      res_stacked
-
-    }
-  }
-
-  else{
-    if(descending){
-      res <- sort(percent_missing(x,...), decreasing = TRUE)
-    res_stacked <- stack(res)[,c(2,1)]
-    names(res_stacked ) <- c("variable","percent")
-    res_stacked
-
-    }
-    else{
-      res<-sort(percent_missing(x,...), decreasing = FALSE)
-      # Make result more "sensible" res -h
-      res_stacked <- stack(res)[,c(2,1)]
-      # Code too repititive
-      names(res_stacked) <- c("variable","percent")
-      res_stacked
-    }
-  }
+    res<-sort(get_na_counts(x,...), decreasing = descending)
 
   }
+
+
+
+else{
+
+      res<-sort(percent_missing(x,...), decreasing = descending)
+
+
+    }
+
+# Make result more "sensible" res -h
+
+  res_stacked <- stack(res)[,c(2,1)]
+  names(res_stacked) <- c("variable","percent")
+  res_stacked
+
 }
+
