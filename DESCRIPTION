@@ -1,6 +1,6 @@
 Package: mde
 Title: Missing Data Explorer
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: 
     person(given = "Nelson",
            family = "Gonzabato",
@@ -10,6 +10,7 @@ Description: Correct identification and handling of missing data is one of the m
              lies and therefore find the most appropriate action to take.
              Graham WJ (2009) <doi:10.1146/annurev.psych.58.110405.085530>. 
 License: GPL-3
+Depends: R(>= 3.6.0)
 Imports: dplyr(>= 0.8.9), tidyr(>= 1.0.3)
 Encoding: UTF-8
 LazyData: true
@@ -19,8 +20,8 @@ BugReports: https://github.com/Nelson-Gon/mde/issues
 Suggests: knitr, rmarkdown, testthat, covr
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2020-06-11 16:39:37 UTC; Nelson
+Packaged: 2020-06-27 14:02:34 UTC; Nelson
 Author: Nelson Gonzabato [aut, cre]
 Maintainer: Nelson Gonzabato <gonzabato@hotmail.com>
 Repository: CRAN
-Date/Publication: 2020-06-11 18:00:02 UTC
+Date/Publication: 2020-06-27 14:40:02 UTC
