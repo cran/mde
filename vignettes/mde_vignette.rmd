@@ -1,13 +1,14 @@
 ---
 date: "`r Sys.Date()`"
-title: Missing Data Exploration with mde
+title: "mde: Missing Data Exploration"
 output: html_document
 vignette: >
   %\VignetteIndexEntry{mde-Missing-Data-Explorer}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 resource_files:
-  - ../man/figures/mde_icon_2.png
+  - man/figures/mde_icon_2.png
+ 
 ---
 
 
@@ -23,26 +24,26 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3890659.svg)](https://doi.org/10.5281/zenodo.3890659)
-[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/mde)](https://cran.r-project.org/package=mde)
-[![Rdoc](http://www.rdocumentation.org/badges/version/mde)](http://www.rdocumentation.org/packages/mde)
+[![CRAN_Status_Badge](https://r-pkg.org/badges/version/mde)](https://cran.r-project.org/package=mde)
+[![Rdoc](https://www.rdocumentation.org/badges/version/mde)](https://www.rdocumentation.org/packages/mde)
 [![Codecov test coverage](https://codecov.io/gh/Nelson-Gon/mde/branch/master/graph/badge.svg)](https://codecov.io/gh/Nelson-Gon/mde?branch=master)
-[![Build Status](https://travis-ci.org/Nelson-Gon/mde.png?branch=master)](https://travis-ci.org/Nelson-Gon/mde)
+[![Build Status](https://travis-ci.com/Nelson-Gon/mde.png?branch=master)](https://travis-ci.com/Nelson-Gon/mde)
 ![R-CMD-check-devel](https://github.com/Nelson-Gon/mde/workflows/R-CMD-check-devel/badge.svg)
 ![test-coverage](https://github.com/Nelson-Gon/mde/workflows/test-coverage/badge.svg)
-[![Project Status](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active) 
-[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![Project Status](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/) 
+[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![Downloads](https://cranlogs.r-pkg.org/badges/mde)](https://cran.r-project.org/package=mde)
-[![TotalDownloads](http://cranlogs.r-pkg.org/badges/grand-total/mde?color=yellow)](https://cran.r-project.org/package=mde)
+[![TotalDownloads](https://cranlogs.r-pkg.org/badges/grand-total/mde?color=green)](https://cran.r-project.org/package=mde)
 [![GitHub last commit](https://img.shields.io/github/last-commit/Nelson-Gon/mde.svg)](https://github.com/Nelson-Gon/mde/commits/master)
 [![GitHub issues](https://img.shields.io/github/issues/Nelson-Gon/mde.svg)](https://GitHub.com/Nelson-Gon/mde/issues/)
 [![GitHub issues-closed](https://img.shields.io/github/issues-closed/Nelson-Gon/mde.svg)](https://GitHub.com/Nelson-Gon/mde/issues?q=is%3Aissue+is%3Aclosed)
-[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/Nelson-Gon/mde.svg)](http://isitmaintained.com/project/Nelson-Gon/mde "Average time to resolve an issue")
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/Nelson-Gon/mde.svg)](https://isitmaintained.com/project/Nelson-Gon/mde "Average time to resolve an issue")
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Nelson-Gon/mde/graphs/commit-activity)
 <!-- badges: end -->
 
-<img src='../man/figures/mde_icon_2.png' align="right" height="120" width="120"/>
+<img src='https://github.com/Nelson-Gon/mde/blob/master/man/figures/mde_icon_2.png?raw=true' align="right" height="120" width="120"/>
 
 The goal of `mde` is to ease exploration of missingness.  
 
@@ -130,6 +131,14 @@ To sort the above in descending order:
 na_summary(airquality, sort_by="percent_missing", descending = TRUE)
 
 ```
+To exclude certain columns from the analysis:
+
+```{r}
+
+na_summary(airquality, exclude_cols = c("Day", "Wind"))
+
+```
+
 
 To get this summary by group:
 
@@ -150,7 +159,7 @@ na_summary(test2, grouping_cols="ID")
 
 * `get_na_counts`
 
-This provides a convenient way to show the number of missing values columnwise. It is relatively fast(tests done on about 400,000 rows, took a few microseconds.)
+This provides a convenient way to show the number of missing values column-wise. It is relatively fast(tests done on about 400,000 rows, took a few microseconds.)
 
 To get the number of missing values in each column of `airquality`, we can use the function as follows:
 
@@ -161,7 +170,7 @@ get_na_counts(airquality)
 
 ```
 
-The above might be less useful if one would like to get the results by group. In that case, one can provide a vector of names in `grouping_cols` to use for grouping. 
+The above might be less useful if one would like to get the results by group. In that case, one can provide a grouping vector of names in `grouping_cols`. 
 
 
 ```{r}
@@ -178,7 +187,7 @@ get_na_counts(test, grouping_cols = "ID")
 
 * `percent_missing`
 
-This is a very simple to use but quick way to take a look at the percentage of data that is missing columnwise.
+This is a very simple to use but quick way to take a look at the percentage of data that is missing column-wise.
 
 
 ```{r}
@@ -200,7 +209,7 @@ percent_missing(test, grouping_cols = "Subject")
 ```
 
 
-To exclude some columns from the above exploration, one can provide an optional character vector in `exclude_cols`
+To exclude some columns from the above exploration, one can provide an optional character vector in `exclude_cols`.
 
 
 ```{r}
@@ -242,9 +251,9 @@ sort_by_missingness(airquality, sort_by = "percents")
 
 * `recode_as_na`
 
-As the name might imply, this converts any value or vector of values to `NA` i.e we take a value such as "missing" or "NA"(not a real `NA` according to `R`) and convert it to R's known handler for missing values(`NA`).
+As the name might imply, this converts any value or vector of values to `NA` i.e. we take a value such as "missing" or "NA" (not a real `NA` according to `R`) and convert it to R's known handler for missing values (`NA`).
 
-To use the function out of the box(with default arguments), one simply does something like:
+To use the function out of the box (with default arguments), one simply does something like:
 
 ```{r}
 
@@ -290,10 +299,32 @@ head(recode_as_na(airquality,value=c(67,118),pattern_type="regex",pattern="(?i)^
 
 ```
 
+* `recode_as_na_if`
+
+This function allows one to deliberately introduce missing values if a column meets a certain threshold of missin values. This is similar to `amputation` but is much more basic. It is only provided here because it is hoped it may be useful to someone for whatever reason.
+
+
+```{r}
+
+head(recode_as_na_if(airquality,sign="gt", percent_na=20))
+
+```
+
+* `recode_as_na_str`
+
+This allows recoding as `NA` based on a string match.
+
+```{r}
+
+partial_match <- data.frame(A=c("Hi","match_me","nope"), B=c(NA, "not_me","nah"))
+
+recode_as_na_str(partial_match,"ends_with","ME", case_sensitive=FALSE)
+
+```
 
 * `recode_na_as`
 
-Sometimes, for whatever reason one would like to replace `NA`s with whatever value they would like. `recode_na_as` provides a very simple way to do just that. 
+Sometimes, for whatever reason, one would like to replace `NA`s with whatever value they would like. `recode_na_as` provides a very simple way to do just that. 
 
 ```{r}
 
@@ -318,6 +349,17 @@ The above also supports custom recoding similar to `recode_na_as`:
 ```{r}
 
 head(mde::recode_na_as(airquality, value=0, pattern_type="starts_with",pattern="Solar"))
+
+```
+
+* `column_based_recode`
+
+Ever needed to change values in a given column based on the proportions of `NA`s in other columns(row-wise)?!. The goal of `column_based_recode` is to achieve just that. Let's see how we could do this with a simple example:
+
+```{r}
+
+
+head(column_based_recode(airquality, values_from = "Wind", values_to="Wind", pattern_type = "regex", pattern = "Solar|Ozone"))
 
 ```
 
@@ -439,7 +481,26 @@ head(drop_na_if(airquality, percent_na = 24))
 For more information, please see the documentation for `drop_na_if` especially for grouping support.
 
 
+* `drop_row_if`
 
+This is similar to `drop_na_if` but does operations rowwise not columnwise. Compare to the example above:
+
+```{r}
+# Drop rows with at least two NAs
+head(drop_row_if(airquality, sign="gteq", type="count" , value = 2))
+
+```
+
+To drop based on percentages:
+
+```{r}
+# Drops 42 rows
+head(drop_row_if(airquality, type="percent", value=16, sign="gteq",
+                 as_percent=TRUE))
+```
+
+
+For more details, please see the documentation of `drop_row_if`.
 
 * `drop_na_at`
 
@@ -482,9 +543,9 @@ This drops columns where all values are missing.
 
 ```{r}
 
-test <- data.frame(ID= c("A","A","B","A",NA), Vals = rep(NA,5))
+test2 <- data.frame(ID= c("A","A","B","A","B"), Vals = c(4,rep(NA, 4))) 
 
-head(drop_all_na(test))
+drop_all_na(test2, grouping_cols="ID")
 
 
 ```
@@ -502,7 +563,7 @@ head(drop_all_na(test, grouping_cols = "ID"))
 ```
 
 
-Please note that the 'mde' project is released with a
+Please note that the `mde` project is released with a
 [Contributor Code of Conduct](https://github.com/Nelson-Gon/mde/blob/master/.github/CODE_OF_CONDUCT.md).
 By contributing to this project, you agree to abide by its terms.
 
@@ -510,6 +571,6 @@ By contributing to this project, you agree to abide by its terms.
 For further exploration, please `browseVignettes("mde")`. 
 
 
-To raise an issue, please do so [here](https://www.github.com/Nelson-Gon/mde/issues)
+To raise an issue, please do so [here](https://github.com/Nelson-Gon/mde/issues)
 
 Thank you, feedback is always welcome :)

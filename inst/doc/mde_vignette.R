@@ -50,6 +50,11 @@ na_summary(airquality, sort_by="percent_missing", descending = TRUE)
 
 ## -----------------------------------------------------------------------------
 
+na_summary(airquality, exclude_cols = c("Day", "Wind"))
+
+
+## -----------------------------------------------------------------------------
+
 test2 <- data.frame(ID= c("A","A","B","A","B"), Vals = c(rep(NA,4),"No"),ID2 = c("E","E","D","E","D"))
 
 na_summary(test2,grouping_cols = c("ID","ID2"))
@@ -150,6 +155,18 @@ head(recode_as_na(airquality,value=c(67,118),pattern_type="regex",pattern="(?i)^
 
 ## -----------------------------------------------------------------------------
 
+head(recode_as_na_if(airquality,sign="gt", percent_na=20))
+
+
+## -----------------------------------------------------------------------------
+
+partial_match <- data.frame(A=c("Hi","match_me","nope"), B=c(NA, "not_me","nah"))
+
+recode_as_na_str(partial_match,"ends_with","ME", case_sensitive=FALSE)
+
+
+## -----------------------------------------------------------------------------
+
 head(recode_na_as(airquality))
 
 # use NaN
@@ -165,6 +182,12 @@ head(recode_na_as(airquality, value=0, subset_cols="Ozone"))
 ## -----------------------------------------------------------------------------
 
 head(mde::recode_na_as(airquality, value=0, pattern_type="starts_with",pattern="Solar"))
+
+
+## -----------------------------------------------------------------------------
+
+
+head(column_based_recode(airquality, values_from = "Wind", values_to="Wind", pattern_type = "regex", pattern = "Solar|Ozone"))
 
 
 ## -----------------------------------------------------------------------------
@@ -228,6 +251,16 @@ head(drop_na_if(airquality, percent_na = 24))
 
 
 ## -----------------------------------------------------------------------------
+# Drop rows with at least two NAs
+head(drop_row_if(airquality, sign="gteq", type="count" , value = 2))
+
+
+## -----------------------------------------------------------------------------
+# Drops 42 rows
+head(drop_row_if(airquality, type="percent", value=16, sign="gteq",
+                 as_percent=TRUE))
+
+## -----------------------------------------------------------------------------
 
 head(drop_na_at(airquality,pattern_type = "starts_with","O"))
 
@@ -247,9 +280,9 @@ head(recode_as_na_for(airquality, value=40,subset_cols=c("Solar.R","Ozone"), cri
 
 ## -----------------------------------------------------------------------------
 
-test <- data.frame(ID= c("A","A","B","A",NA), Vals = rep(NA,5))
+test2 <- data.frame(ID= c("A","A","B","A","B"), Vals = c(4,rep(NA, 4))) 
 
-head(drop_all_na(test))
+drop_all_na(test2, grouping_cols="ID")
 
 
 

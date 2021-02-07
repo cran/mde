@@ -1,9 +1,35 @@
 ---
 title: 'Missing Data Explorer'
 author: "Nelson Gonzabato"
-date: "11/06/2020"
+date: "`r Sys.Date()`"
 output: html_document
 ---
+
+# mde 0.3.0
+
+* `drop_row_if` arguments were changed. See docs for the new arguments. This was
+done to allow new functionality that enables dropping rows based on counts. 
+
+* Sorting strings in `na_summary` contained a minor bug that has now been fixed. 
+
+* `recode_as_na_str` is a new function to `recode_as_na` based on string matching. 
+
+* `recode_as_na_if` is a new function that allows deliberate addition of `NA`s to a column if it meets a pre-defined condition. This is essentially the reverse of `drop_na_if`. 
+
+* `drop_row_if` is a new function similar to `drop_na_if` but for rows instead of columns. 
+
+* `percent_missing` can now work independently for factors, characters, or numeric data. It previously was limited to `data.frame` objects. 
+
+* Fixed issues with `drop_na_at` that resulted in failing data rebinding. 
+
+* `get_na_counts` now includes an optional `exclude_cols` argument to exclude columns from the analysis. 
+
+
+* `na_summary` has been fixed to allow exclusion of columns from the analysis.
+
+* `all_na` is a new low level function to perform missingness boolean checks for columns(vectors). 
+
+* Added a new function `column_based_recoode` that aims to allow `NA` recoding based on other columns. 
 
 # mde 0.2.1
 

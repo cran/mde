@@ -17,19 +17,18 @@ drop_all_na <- function(df, grouping_cols=NULL){
 
 drop_all_na.data.frame <- function(df, grouping_cols = NULL){
   if(!is.null(grouping_cols)){
-    if(!all(grouping_cols %in% names(df))){
-      stop("All grouping columns should exist in the dataset.")
-    }
+check_column_existence(df, grouping_cols, unique_name = "to group by")
+    
    df %>%
          dplyr::group_by(!!!dplyr::syms(grouping_cols)) %>%
-     dplyr::filter(dplyr::across(everything(),~!all(is.na(.)))) %>%
+     dplyr::filter(dplyr::across(everything(),~!all_na(.))) %>%
      dplyr::ungroup()
 
 
   }
 else{
 
-  Filter(function(x) !all(is.na(x)), df)
+  Filter(function(x) !all_na(x), df)
 
 }
 
