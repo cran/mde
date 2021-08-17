@@ -4,120 +4,9 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-## ---- eval=FALSE--------------------------------------------------------------
-#  
-#  install.packages("mde")
-#  
-#  
-
-## ---- eval = FALSE------------------------------------------------------------
-#  
-#  devtools::install_github("Nelson-Gon/mde")
-#  
-#  
-#  devtools::install_github("Nelson-Gon/mde",  build_vignettes=TRUE)
-#  
-
-## ---- eval=FALSE--------------------------------------------------------------
-#  
-#  devtools::install_github("Nelson-Gon/mde@develop")
-#  
-#  
-#  
-
 ## -----------------------------------------------------------------------------
 
 library(mde)
-
-
-## -----------------------------------------------------------------------------
-
-na_summary(airquality)
-
-
-## -----------------------------------------------------------------------------
-
-na_summary(airquality,sort_by = "percent_complete")
-
-
-## -----------------------------------------------------------------------------
-na_summary(airquality, sort_by = "percent_missing")
-
-
-## -----------------------------------------------------------------------------
-na_summary(airquality, sort_by="percent_missing", descending = TRUE)
-
-
-## -----------------------------------------------------------------------------
-
-na_summary(airquality, exclude_cols = c("Day", "Wind"))
-
-
-## -----------------------------------------------------------------------------
-
-test2 <- data.frame(ID= c("A","A","B","A","B"), Vals = c(rep(NA,4),"No"),ID2 = c("E","E","D","E","D"))
-
-na_summary(test2,grouping_cols = c("ID","ID2"))
-
-
-## -----------------------------------------------------------------------------
-
-na_summary(test2, grouping_cols="ID")
-
-
-
-## -----------------------------------------------------------------------------
-
-get_na_counts(airquality)
-
-
-
-## -----------------------------------------------------------------------------
-
-test <- structure(list(Subject = structure(c(1L, 1L, 2L, 2L), .Label = c("A", 
-"B"), class = "factor"), res = c(NA, 1, 2, 3), ID = structure(c(1L, 
-1L, 2L, 2L), .Label = c("1", "2"), class = "factor")), class = "data.frame", row.names = c(NA, 
--4L))
-
-get_na_counts(test, grouping_cols = "ID")
-
-
-
-## -----------------------------------------------------------------------------
-
-
-percent_missing(airquality)
-
-
-
-## -----------------------------------------------------------------------------
-
-percent_missing(test, grouping_cols = "Subject")
-
-
-
-
-## -----------------------------------------------------------------------------
-
-percent_missing(airquality,exclude_cols = c("Day","Temp"))
-
-
-
-## -----------------------------------------------------------------------------
-
-
-sort_by_missingness(airquality, sort_by = "counts")
-
-
-
-## -----------------------------------------------------------------------------
-
-sort_by_missingness(airquality, sort_by = "counts", descend = TRUE)
-
-
-## -----------------------------------------------------------------------------
-
-sort_by_missingness(airquality, sort_by = "percents")
 
 
 ## -----------------------------------------------------------------------------
@@ -290,6 +179,7 @@ head(drop_na_at(airquality,pattern_type = "starts_with","O"))
 ## -----------------------------------------------------------------------------
 
 test2 <- data.frame(ID= c("A","A","B","A","B"), Vals = c(4,rep(NA, 4))) 
+
 drop_all_na(test2, grouping_cols="ID")
 
 
@@ -298,7 +188,12 @@ drop_all_na(test2, grouping_cols="ID")
 
 test2 <- data.frame(ID= c("A","A","B","A","B"), Vals = rep(NA, 5)) 
 
-head(drop_all_na(test, grouping_cols = "ID"))
+head(drop_all_na(test2, grouping_cols = "ID"))
 
 
+
+## -----------------------------------------------------------------------------
+head(dict_recode(airquality, use_func="recode_na_as",
+                 patterns = c("solar", "ozone"),
+                 pattern_type="starts_with", values = c(520,42)))
 

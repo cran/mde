@@ -5,7 +5,31 @@ date: "`r Sys.Date()`"
 output: html_document
 ---
 
+# mde 0.3.1
+
+* Fixed a bug that made `exclude_cols` result in non-exclusion in grouped `na.summary` outputs. 
+
+* `na_summary` now includes a `round_to` parameter to control the number of digits to round to. Defaults to `options("digits")` in the user's settings. 
+
+* `drop_na_at` no longer uses a `tibble` to avoid warnings with `tibble` `row.names`. 
+
+* Tests in `dict_recode` were extended to ensure that we get what is expected particularly with respect to the `use_func` argument. 
+
+* `dict_recode` now supports the use of different `NA` recoding functions. These
+can be provided via the argument `use_func`. 
+
+* `dict_recode` is a new function to allow recoding with a pattern-values pair. 
+
+* `drop_na_if` now supports keep certain columns when grouping. It also now
+supports dropping only at certain columns. 
+
+* `drop_na_if` now supports dropping groups that meet a set missing data
+threshold. 
+
+* `recode_as_na_str` updated to convert factors to character.
+
 # mde 0.3.0
+
 
 * `drop_row_if` arguments were changed. See docs for the new arguments. This was
 done to allow new functionality that enables dropping rows based on counts. 

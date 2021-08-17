@@ -9,11 +9,13 @@ na_summary(
   grouping_cols = NULL,
   sort_by = NULL,
   descending = FALSE,
-  exclude_cols = NULL
+  exclude_cols = NULL,
+  round_to = NULL
 )
 }
 \arguments{
-\item{df}{A valid R `object` for which the percentage of missing values is required.}
+\item{df}{A valid R `object` for which the percentage of missing values is 
+required.}
 
 \item{grouping_cols}{A character vector. If supplied, one can provide the columns by which to group the
 data.}
@@ -22,7 +24,10 @@ data.}
 
 \item{descending}{Logical. Should missing values be sorted in decreasing order ie largest to smallest? Defaults to FALSE.}
 
-\item{exclude_cols}{A character vector indicating columns to exclude when returning results.}
+\item{exclude_cols}{A character vector indicating columns to exclude when 
+returning results.}
+
+\item{round_to}{Number of places to round 2. Defaults to user digits option.}
 }
 \description{
 An all-in-one missingness report

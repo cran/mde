@@ -1,7 +1,7 @@
 ---
 date: "`r Sys.Date()`"
-title: "mde: Missing Data Exploration"
 output: html_document
+title: "mde: Missing Data Explorer"
 vignette: >
   %\VignetteIndexEntry{mde-Missing-Data-Explorer}
   %\VignetteEngine{knitr::rmarkdown}
@@ -20,12 +20,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-# `mde`: Missing Data Explorer
+
 
 <!-- badges: start -->
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3890659.svg)](https://doi.org/10.5281/zenodo.3890659)
 [![CRAN_Status_Badge](https://r-pkg.org/badges/version/mde)](https://cran.r-project.org/package=mde)
-[![Rdoc](https://www.rdocumentation.org/badges/version/mde)](https://www.rdocumentation.org/packages/mde)
+[![CRAN\_Release\_Badge](https://www.r-pkg.org/badges/version-ago/mde)](https://CRAN.R-project.org/package=mde) 
 [![Codecov test coverage](https://codecov.io/gh/Nelson-Gon/mde/branch/master/graph/badge.svg)](https://codecov.io/gh/Nelson-Gon/mde?branch=master)
 [![Build Status](https://travis-ci.com/Nelson-Gon/mde.png?branch=master)](https://travis-ci.com/Nelson-Gon/mde)
 ![R-CMD-check-devel](https://github.com/Nelson-Gon/mde/workflows/R-CMD-check-devel/badge.svg)
@@ -38,12 +38,12 @@ knitr::opts_chunk$set(
 [![GitHub last commit](https://img.shields.io/github/last-commit/Nelson-Gon/mde.svg)](https://github.com/Nelson-Gon/mde/commits/master)
 [![GitHub issues](https://img.shields.io/github/issues/Nelson-Gon/mde.svg)](https://GitHub.com/Nelson-Gon/mde/issues/)
 [![GitHub issues-closed](https://img.shields.io/github/issues-closed/Nelson-Gon/mde.svg)](https://GitHub.com/Nelson-Gon/mde/issues?q=is%3Aissue+is%3Aclosed)
-[![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/Nelson-Gon/mde.svg)](https://isitmaintained.com/project/Nelson-Gon/mde "Average time to resolve an issue")
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Nelson-Gon/mde/graphs/commit-activity)
 <!-- badges: end -->
 
 <img src='https://github.com/Nelson-Gon/mde/blob/master/man/figures/mde_icon_2.png?raw=true' align="right" height="120" width="120"/>
+
 
 The goal of `mde` is to ease exploration of missingness.  
 
@@ -51,7 +51,7 @@ The goal of `mde` is to ease exploration of missingness.
 
 **Installation**
 
- **CRAN release**
+**CRAN release**
 
 
 ```{r, eval=FALSE}
@@ -97,7 +97,8 @@ library(mde)
 
 
 
-**Currently available functions.**
+
+## Exploring missingness 
 
 
  To get a simple missingness report, use `na_summary`:
@@ -249,6 +250,8 @@ sort_by_missingness(airquality, sort_by = "percents")
 
 ```
 
+## Recoding as NA
+
 * `recode_as_na`
 
 As the name might imply, this converts any value or vector of values to `NA` i.e. we take a value such as "missing" or "NA" (not a real `NA` according to `R`) and convert it to R's known handler for missing values (`NA`).
@@ -299,9 +302,10 @@ head(recode_as_na(airquality,value=c(67,118),pattern_type="regex",pattern="(?i)^
 
 ```
 
+
 * `recode_as_na_if`
 
-This function allows one to deliberately introduce missing values if a column meets a certain threshold of missin values. This is similar to `amputation` but is much more basic. It is only provided here because it is hoped it may be useful to someone for whatever reason.
+This function allows one to deliberately introduce missing values if a column meets a certain threshold of missing  values. This is similar to `amputation` but is much more basic. It is only provided here because it is hoped it may be useful to someone for whatever reason.
 
 
 ```{r}
@@ -321,6 +325,31 @@ partial_match <- data.frame(A=c("Hi","match_me","nope"), B=c(NA, "not_me","nah")
 recode_as_na_str(partial_match,"ends_with","ME", case_sensitive=FALSE)
 
 ```
+
+
+* `recode_as_na_for` 
+
+For all values greater/less/less or equal/greater or equal than some value, can I convert them to `NA`?!
+
+**Yes You Can!** All we have to do is use `recode_as_na_for`:
+
+```{r}
+
+head(recode_as_na_for(airquality,criteria="gt",value=25))
+
+
+
+```
+
+To do so at specific columns, pass an optional `subset_cols` character vector:
+
+```{r}
+
+head(recode_as_na_for(airquality, value=40,subset_cols=c("Solar.R","Ozone"), criteria="gt"))
+
+```
+
+## Recoding NA as 
 
 * `recode_na_as`
 
@@ -443,6 +472,8 @@ head(recode_na_if(some_data,grouping_col="ID", target_groups=c("A2","A3"),
 ```
 
 
+## Dropping NAs
+
 * `drop_na_if`
 
 Suppose you wanted to drop any column that has a percentage of `NA`s greater than or equal to a certain value? `drop_na_if` does just that. 
@@ -478,7 +509,18 @@ head(drop_na_if(airquality, percent_na = 24))
 
 ```
 
-For more information, please see the documentation for `drop_na_if` especially for grouping support.
+To drop groups that meet a set missingness criterion, we proceed as follows.
+
+```{r}
+grouped_drop <- structure(list(ID = c("A", "A", "B", "A", "B"), 
+          Vals = c(4, NA,  NA, NA, NA), Values = c(5, 6, 7, 8, NA)), 
+          row.names = c(NA, -5L), class = "data.frame")
+# Drop all columns for groups that meet a percent missingness of greater than or
+# equal to 67
+drop_na_if(grouped_drop,percent_na = 67,sign="gteq",
+                                    grouping_cols = "ID")
+```
+
 
 
 * `drop_row_if`
@@ -490,7 +532,6 @@ This is similar to `drop_na_if` but does operations rowwise not columnwise. Comp
 head(drop_row_if(airquality, sign="gteq", type="count" , value = 2))
 
 ```
-
 To drop based on percentages:
 
 ```{r}
@@ -498,7 +539,6 @@ To drop based on percentages:
 head(drop_row_if(airquality, type="percent", value=16, sign="gteq",
                  as_percent=TRUE))
 ```
-
 
 For more details, please see the documentation of `drop_row_if`.
 
@@ -513,27 +553,7 @@ head(drop_na_at(airquality,pattern_type = "starts_with","O"))
 
 ```
 
-* `recode_as_na_for` 
 
-For all values greater/less/less or equal/greater or equal than some value, can I convert them to `NA`?!
-
-**Yes You Can!** All we have to do is use `recode_as_na_for`:
-
-```{r}
-
-head(recode_as_na_for(airquality,criteria="gt",value=25))
-
-
-
-```
-
-To do so at specific columns, pass an optional `subset_cols` character vector:
-
-```{r}
-
-head(recode_as_na_for(airquality, value=40,subset_cols=c("Solar.R","Ozone"), criteria="gt"))
-
-```
 
 * `drop_all_na` 
 
@@ -544,7 +564,6 @@ This drops columns where all values are missing.
 ```{r}
 
 test2 <- data.frame(ID= c("A","A","B","A","B"), Vals = c(4,rep(NA, 4))) 
-
 drop_all_na(test2, grouping_cols="ID")
 
 
