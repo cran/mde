@@ -197,3 +197,8 @@ head(dict_recode(airquality, use_func="recode_na_as",
                  patterns = c("solar", "ozone"),
                  pattern_type="starts_with", values = c(520,42)))
 
+## -----------------------------------------------------------------------------
+
+head(recode_as_value(airquality, value=c(67,118),replacement=NA,
+                     pattern_type="starts_with",pattern="S|O"))
+

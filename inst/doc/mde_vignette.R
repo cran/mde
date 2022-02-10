@@ -54,6 +54,12 @@ na_summary(airquality, exclude_cols = c("Day", "Wind"))
 
 
 ## -----------------------------------------------------------------------------
+na_summary(airquality, regex_kind = "inclusion",pattern_type = "starts_with", pattern = "O|S")
+
+## -----------------------------------------------------------------------------
+na_summary(airquality, regex_kind = "exclusion",pattern_type = "regex", pattern = "^[O|S]")
+
+## -----------------------------------------------------------------------------
 
 test2 <- data.frame(ID= c("A","A","B","A","B"), Vals = c(rep(NA,4),"No"),ID2 = c("E","E","D","E","D"))
 

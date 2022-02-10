@@ -19,6 +19,11 @@ na_summary(airquality)
 na_summary(airquality,sort_by = "percent_complete")
 
 
+## ----reset_rownames-----------------------------------------------------------
+
+na_summary(airquality,sort_by = "percent_complete", reset_rownames = TRUE)
+
+
 ## -----------------------------------------------------------------------------
 na_summary(airquality, sort_by = "percent_missing")
 
@@ -31,6 +36,12 @@ na_summary(airquality, sort_by="percent_missing", descending = TRUE)
 
 na_summary(airquality, exclude_cols = c("Day", "Wind"))
 
+
+## -----------------------------------------------------------------------------
+na_summary(airquality, regex_kind = "inclusion",pattern_type = "starts_with", pattern = "O|S")
+
+## -----------------------------------------------------------------------------
+na_summary(airquality, regex_kind = "exclusion",pattern_type = "regex", pattern = "^[O|S]")
 
 ## -----------------------------------------------------------------------------
 

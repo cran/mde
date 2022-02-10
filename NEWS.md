@@ -5,6 +5,28 @@ date: "`r Sys.Date()`"
 output: html_document
 ---
 
+# mde 0.3.2
+
+* There is now a function `recode_as_value` for general recoding. See 
+[#41](https://github.com/Nelson-Gon/mde/issues/41). 
+
+* Fixed `all_of` warnings in `dplyr` `select` and `across` verbs. 
+
+* Tests now use edition 3 of testthat. See https://github.com/r-lib/testthat/issues/1471 and https://github.com/Nelson-Gon/manymodelr/pull/22
+
+* Vignettes no longer include URLs to avoid future issues with broken links on CRAN. 
+
+* Exclusion or inclusion in `na_summary`via regular expressions is now possible via `regex_kind` and providing a `pattern_type` and `pattern`. 
+
+* `exclusion` is now done entirely in `base` R instead of using `dplyr::select`. 
+
+* `get_na_means` and `percent_missing` now support `POSIXct`. 
+
+* `na_counts`  and `percent_na` are new vector focused functions to allow `get`ting `na_counts` and percent missingness for objects of classes like `POSIXct`.
+
+* include a new argument to reset rownames in `na_summary`. Fixes  
+[#33](https://github.com/Nelson-Gon/mde/issues/33). 
+
 # mde 0.3.1
 
 * Fixed a bug that made `exclude_cols` result in non-exclusion in grouped `na.summary` outputs. 
