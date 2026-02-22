@@ -1,29 +1,29 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 
-## ---- eval=FALSE--------------------------------------------------------------
-#  
-#  install.packages("mde")
-#  
-#  
+## ----eval=FALSE---------------------------------------------------------------
+# 
+# install.packages("mde")
+# 
+# 
 
-## ---- eval = FALSE------------------------------------------------------------
-#  
-#  devtools::install_github("Nelson-Gon/mde")
-#  
-#  
-#  devtools::install_github("Nelson-Gon/mde",  build_vignettes=TRUE)
-#  
+## ----eval = FALSE-------------------------------------------------------------
+# 
+# devtools::install_github("Nelson-Gon/mde")
+# 
+# 
+# devtools::install_github("Nelson-Gon/mde",  build_vignettes=TRUE)
+# 
 
-## ---- eval=FALSE--------------------------------------------------------------
-#  
-#  devtools::install_github("Nelson-Gon/mde@develop")
-#  
-#  
-#  
+## ----eval=FALSE---------------------------------------------------------------
+# 
+# devtools::install_github("Nelson-Gon/mde@develop")
+# 
+# 
+# 
 
 ## -----------------------------------------------------------------------------
 
